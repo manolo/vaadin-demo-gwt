@@ -10,8 +10,9 @@
   <name>com.vaadin.polymer.demo</name>
 
   <properties>
-    <gwt.version>2.8.0-SNAPSHOT</gwt.version>
+    <gwt.version>2.8.0-JETTY9</gwt.version>
     <vaadin.version>7.6.1</vaadin.version>
+    <jetty.version>9.2.14.v20151106</jetty.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,6 +36,12 @@
       <releases><enabled>false</enabled></releases>
       <snapshots><enabled>true</enabled></snapshots>
     </repository>
+    <repository>
+      <id>manolo-repo</id>
+      <url>https://github.com/manolo/gwt-snapshot/raw/master/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+     </repository>
   </repositories>
 
   <dependencyManagement>
@@ -86,6 +93,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-themes</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -95,8 +106,19 @@
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.0.1</version>
-      <scope>provided</scope>
     </dependency>
+    <dependency>
+     <groupId>org.eclipse.jetty</groupId>
+     <artifactId>jetty-annotations</artifactId>
+     <version>${jetty.version}</version>
+    </dependency>
+    <!--
+    <dependency>
+     <groupId>org.eclipse.jetty</groupId>
+     <artifactId>jetty-annotations-api</artifactId>
+     <version>${jetty.version}</version>
+    </dependency>
+  -->
   </dependencies>
 
   <build>
@@ -121,15 +143,20 @@
           </execution>
         </executions>
         <configuration>
-          <moduleName>com.vaadin.DefaultWidgetSet</moduleName>
-          <moduleShortName>com.vaadin.DefaultWidgetSet</moduleShortName>
+          <moduleName>com.vaadin.polymer.demo.DemoWidgetset</moduleName>
+          <moduleShortName>com.vaadin.polymer.demo.DemoWidgetset</moduleShortName>
           <failOnError>true</failOnError>
           <!-- Compiler configuration -->
           <compilerArgs>
             <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
             <arg>-compileReport</arg>
             <arg>-XcompilerMetrics</arg>
+            <arg>-war</arg><arg>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</arg>
           </compilerArgs>
+          <devmodeArgs>
+            <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
+            <arg>-modulePathPrefix</arg><arg>VAADIN/widgetsets</arg>
+          </devmodeArgs>
           <!-- DevMode configuration -->
           <warDir>${project.build.directory}/${project.build.finalName}</warDir>
           <classpathScope>compile+runtime</classpathScope>
@@ -137,6 +164,39 @@
           <startupUrls>
             <startupUrl>demo.html</startupUrl>
           </startupUrls>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-maven-plugin</artifactId>
+        <version>${vaadin.version}</version>
+        <configuration>
+          <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+          <webappDirectory>${basedir}/target/classes/VAADIN/widgetsets</webappDirectory>
+          <draftCompile>false</draftCompile>
+          <compileReport>false</compileReport>
+          <style>OBF</style>
+          <strict>true</strict>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>update-theme</goal>
+              <!-- <goal>update-widgetset</goal> -->
+              <!-- <goal>compile</goal> -->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+                <packagingExcludes>WEB-INF/classes/VAADIN/gwt-unitCache/**,
+                        WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**</packagingExcludes>
         </configuration>
       </plugin>
 
@@ -149,6 +209,30 @@
         </configuration>
       </plugin>
 
+      <plugin>
+         <artifactId>maven-resources-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>copy-resources</id>
+             <phase>generate-sources</phase>
+             <goals>
+               <goal>copy-resources</goal>
+             </goals>
+             <configuration>
+               <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+               <resources>
+                 <resource>
+                  <directory>src/main/webapp</directory>
+                 </resource>
+               </resources>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
+       <plugin>
+         <groupId>org.mortbay.jetty</groupId>
+         <artifactId>jetty-maven-plugin</artifactId>
+       </plugin>
     </plugins>
   </build>
 </project>
