@@ -17,7 +17,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  *
  */
-@Theme("demotheme")
+@Theme("valo")
 @Widgetset("com.vaadin.polymer.demo.DemoWidgetset")
 public class DemoUI extends UI {
 

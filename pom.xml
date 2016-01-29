@@ -97,6 +97,16 @@
       <artifactId>vaadin-themes</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client-compiler</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -233,6 +243,48 @@
          <groupId>org.mortbay.jetty</groupId>
          <artifactId>jetty-maven-plugin</artifactId>
        </plugin>
+       <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>vaadin-client-compiler-classes</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>unpack-dependencies</goal>
+                    </goals>
+                    <configuration>
+                        <includeGroupIds>com.vaadin</includeGroupIds>
+                        <includeArtifactIds>vaadin-client-compiler,vaadin-client</includeArtifactIds>
+                        <includes>com/vaadin/**</includes>
+                        <excludes>**/MessageSender.*</excludes>
+                        <outputDirectory>
+                            ${project.build.directory}/generated-sources
+                        </outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+            <dependencies>
+            </dependencies>
+        </plugin>
+        <plugin>
+             <groupId>org.codehaus.mojo</groupId>
+             <artifactId>build-helper-maven-plugin</artifactId>
+             <executions>
+                 <execution>
+                     <id>add-source</id>
+                     <phase>generate-sources</phase>
+                     <goals>
+                         <goal>add-source</goal>
+                     </goals>
+                     <configuration>
+                         <sources>
+                             <source>${project.build.directory}/generated-sources</source>
+                         </sources>
+                     </configuration>
+                 </execution>
+             </executions>
+         </plugin>
     </plugins>
   </build>
 </project>
