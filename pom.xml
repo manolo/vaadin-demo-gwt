@@ -10,7 +10,7 @@
   <name>com.vaadin.polymer.demo</name>
 
   <properties>
-    <gwt.version>2.8.0-JETTY9</gwt.version>
+    <gwt.version>2.8.0.JETTY9-SNAPSHOT</gwt.version>
     <vaadin.version>7.6.1</vaadin.version>
     <jetty.version>9.2.14.v20151106</jetty.version>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,17 +66,17 @@
   <dependencies>
     <dependency>
       <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-elemental</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -89,13 +89,10 @@
     </dependency>
     <dependency>
       <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-widgets</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.vaadin</groupId>
       <artifactId>vaadin-themes</artifactId>
     </dependency>
+
+    <!-- Using scope test here to use it in unpack dependencies below -->
     <dependency>
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-client</artifactId>
@@ -106,12 +103,8 @@
       <artifactId>vaadin-client-compiler</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
+
+    <!-- Enable servlet 3 annotations -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -122,13 +115,13 @@
      <artifactId>jetty-annotations</artifactId>
      <version>${jetty.version}</version>
     </dependency>
-    <!--
+
     <dependency>
-     <groupId>org.eclipse.jetty</groupId>
-     <artifactId>jetty-annotations-api</artifactId>
-     <version>${jetty.version}</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
     </dependency>
-  -->
   </dependencies>
 
   <build>
@@ -136,8 +129,6 @@
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 
     <plugins>
-
-      <!-- GWT Maven Plugin-->
       <plugin>
         <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
@@ -156,24 +147,24 @@
           <moduleName>com.vaadin.polymer.demo.DemoWidgetset</moduleName>
           <moduleShortName>com.vaadin.polymer.demo.DemoWidgetset</moduleShortName>
           <failOnError>true</failOnError>
-          <!-- Compiler configuration -->
           <compilerArgs>
-            <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
             <arg>-compileReport</arg>
             <arg>-XcompilerMetrics</arg>
+            <!-- Vaadin apps expect the widgetset in this folder -->
             <arg>-war</arg><arg>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</arg>
           </compilerArgs>
+
+          <!-- DevMode configuration -->
           <devmodeArgs>
-            <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
+            <!-- For SDM we need to inform where the module output is produced -->
             <arg>-modulePathPrefix</arg><arg>VAADIN/widgetsets</arg>
           </devmodeArgs>
-          <!-- DevMode configuration -->
           <warDir>${project.build.directory}/${project.build.finalName}</warDir>
           <classpathScope>compile+runtime</classpathScope>
-          <!-- URL(s) that should be opened by DevMode (gwt:devmode). -->
           <startupUrls>
-            <startupUrl>demo.html</startupUrl>
+            <startupUrl>/</startupUrl>
           </startupUrls>
+
         </configuration>
       </plugin>
       <plugin>
@@ -192,7 +183,9 @@
           <execution>
             <goals>
               <goal>update-theme</goal>
+              <!-- Don't update widgetset this breaks the build with gwt compiler -->
               <!-- <goal>update-widgetset</goal> -->
+              <!-- Don't compile, let GWT compile the widgetset -->
               <!-- <goal>compile</goal> -->
             </goals>
           </execution>
@@ -207,15 +200,6 @@
                 <failOnMissingWebXml>false</failOnMissingWebXml>
                 <packagingExcludes>WEB-INF/classes/VAADIN/gwt-unitCache/**,
                         WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**</packagingExcludes>
-        </configuration>
-      </plugin>
-
-      <!-- Skip normal test execution, we use gwt:test instead -->
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
 
@@ -239,10 +223,13 @@
            </execution>
          </executions>
        </plugin>
+
        <plugin>
          <groupId>org.mortbay.jetty</groupId>
          <artifactId>jetty-maven-plugin</artifactId>
        </plugin>
+
+       <!-- Import Vaadin dependencies using the resources plugin so as we can remove gwt libraries -->
        <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
@@ -267,6 +254,7 @@
             <dependencies>
             </dependencies>
         </plugin>
+
         <plugin>
              <groupId>org.codehaus.mojo</groupId>
              <artifactId>build-helper-maven-plugin</artifactId>
