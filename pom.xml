@@ -146,17 +146,17 @@
         <configuration>
           <moduleName>com.vaadin.polymer.demo.DemoWidgetset</moduleName>
           <moduleShortName>com.vaadin.polymer.demo.DemoWidgetset</moduleShortName>
+          <!-- Vaadin apps expect the js output in this folder -->
+          <webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
           <failOnError>true</failOnError>
           <compilerArgs>
-            <arg>-compileReport</arg>
-            <arg>-XcompilerMetrics</arg>
-            <!-- Vaadin apps expect the widgetset in this folder -->
-            <arg>-war</arg><arg>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</arg>
+            <!-- <arg>-compileReport</arg> -->
+            <!-- <arg>-XcompilerMetrics</arg> -->
           </compilerArgs>
 
           <!-- DevMode configuration -->
           <devmodeArgs>
-            <!-- For SDM we need to inform where the module output is produced -->
+            <!-- For SDM we need to inform where the js is produced -->
             <arg>-modulePathPrefix</arg><arg>VAADIN/widgetsets</arg>
           </devmodeArgs>
           <warDir>${project.build.directory}/${project.build.finalName}</warDir>
