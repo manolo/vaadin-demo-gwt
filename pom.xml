@@ -91,6 +91,22 @@
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-themes</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.vaadin.polymer</groupId>
+      <artifactId>vaadin-gwt-polymer-elements</artifactId>
+      <version>1.2.3.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.gwtquery</groupId>
+      <artifactId>gwtquery</artifactId>
+      <version>1.4.4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.0</version>
+    </dependency>
 
     <!-- Using scope test here to use it in unpack dependencies below -->
     <dependency>

@@ -1,14 +1,22 @@
 package com.vaadin.gwtdemo;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+
+import org.jsoup.nodes.Element;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.BootstrapFragmentResponse;
+import com.vaadin.server.BootstrapListener;
+import com.vaadin.server.BootstrapPageResponse;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -18,25 +26,29 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 @Theme(GwtDemoUI.THEME)
-@Widgetset("com.vaadin.gwtdemo.GwtDemoWidgetset")
+@Widgetset(GwtDemoUI.WIDGETSET)
 public class GwtDemoUI extends UI {
     
     public static final String THEME = "gwtdemo";
+    public static final String WIDGETSET = "com.vaadin.gwtdemo.GwtDemoWidgetset";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         
         // For some reason this is not performed correctly in the bootstrap
-        String js =
-                "l = document.createElement('link');" +
-                "l.rel = 'stylesheet';" +
-                "l.href = 'VAADIN/themes/" + THEME + "/styles.css';" +
-                "document.body.appendChild(l);" +
-                "document.body.classList.add('" + THEME + "')";
-        JavaScript.eval(js);
+//        String js =
+//                "l = document.createElement('link');" +
+//                "l.rel = 'stylesheet';" +
+//                "l.href = 'VAADIN/themes/" + THEME + "/styles.css';" +
+//                "document.body.appendChild(l);" +
+//                "document.body.classList.add('" + THEME + "')";
+//        JavaScript.eval(js);
         
         
         final VerticalLayout layout = new VerticalLayout();
+        
+//        PaperSliderComponent p = new PaperSliderComponent();
+//        layout.addComponent(p);
         
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
@@ -57,5 +69,30 @@ public class GwtDemoUI extends UI {
     @WebServlet(urlPatterns = "/*", name = "GwtDemoUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = GwtDemoUI.class, productionMode = false)
     public static class GwtDemoUIServlet extends VaadinServlet {
+        @Override
+        protected void servletInitialized() throws ServletException {
+            super.servletInitialized();
+            getService().addSessionInitListener(new SessionInitListener() {
+                public void sessionInit(SessionInitEvent event) throws ServiceException {
+                    event.getSession().addBootstrapListener(new BootstrapListener() {
+                        public void modifyBootstrapPage(BootstrapPageResponse response) {
+                            
+                            Element head = response.getDocument().head();
+                            head.appendElement("script")
+                                .attr("src", "VAADIN/widgetsets/" + WIDGETSET + "/bower_components/webcomponentsjs/webcomponents-lite.js");
+                            
+                            head.appendElement("link")
+                                .attr("rel", "stylesheet")
+                                .attr("href", "VAADIN/themes/" + THEME + "/styles.css");
+                            
+                            Element body = response.getDocument().body();
+                            body.addClass(THEME);
+                        }
+                        public void modifyBootstrapFragment(BootstrapFragmentResponse response) {
+                        }
+                    });
+                }
+            });
+        }        
     }
 }
