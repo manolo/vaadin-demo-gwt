@@ -26,7 +26,8 @@ To debug in SuperDevMode:
 ### Issues
 
 1. For some reason Vaadin bootstrap does not load the theme styles, or they are removed in some point. I'm facing the problem injecting some JS from server in order to add the style tag to the header, and add the appropriate theme class to the body.
-2. We need a patched version of `MessageSender` because it does not compiles with this setup, take a look to [this issue](https://dev.vaadin.com/ticket/19537)
+2. We need a patched version of `MessageSender` (line 165) because it does not compiles with this setup, take a look to [this issue](https://dev.vaadin.com/ticket/19537)
+3. Also a patched version of `LayoutManager` (line 265) is needed in order to avoid an assertion in SDM 
 
     
     
