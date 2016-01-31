@@ -244,7 +244,7 @@
                         <includeGroupIds>com.vaadin</includeGroupIds>
                         <includeArtifactIds>vaadin-client-compiler,vaadin-client</includeArtifactIds>
                         <includes>com/vaadin/**</includes>
-                        <excludes>**/MessageSender.*</excludes>
+                        <excludes>**/MessageSender.*,**/LayoutManager.*</excludes>
                         <outputDirectory>
                             ${project.build.directory}/generated-sources
                         </outputDirectory>
