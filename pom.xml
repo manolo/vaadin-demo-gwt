@@ -144,8 +144,8 @@
           </execution>
         </executions>
         <configuration>
-          <moduleName>com.vaadin.polymer.demo.DemoWidgetset</moduleName>
-          <moduleShortName>com.vaadin.polymer.demo.DemoWidgetset</moduleShortName>
+          <moduleName>com.vaadin.gwtdemo.GwtDemoWidgetset</moduleName>
+          <moduleShortName>com.vaadin.gwtdemo.GwtDemoWidgetset</moduleShortName>
           <!-- Vaadin apps expect the js output in this folder -->
           <webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
           <failOnError>true</failOnError>
