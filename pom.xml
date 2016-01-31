@@ -152,6 +152,7 @@
           <compilerArgs>
             <!-- <arg>-compileReport</arg> -->
             <!-- <arg>-XcompilerMetrics</arg> -->
+            <arg>-gen</arg><arg>${project.build.directory}/generated-sources</arg>
           </compilerArgs>
 
           <!-- DevMode configuration -->
