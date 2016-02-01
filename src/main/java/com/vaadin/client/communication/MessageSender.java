@@ -162,7 +162,7 @@ public class MessageSender {
 
         if (extraJson != null) {
             for (String key : extraJson.keys()) {
-                payload.put(key, (JsonValue)extraJson.get(key));
+                payload.put(key, extraJson.<JsonValue>get(key));
             }
         }
 

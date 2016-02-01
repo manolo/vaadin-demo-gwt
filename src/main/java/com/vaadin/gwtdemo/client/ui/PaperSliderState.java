@@ -1,5 +1,8 @@
 package com.vaadin.gwtdemo.client.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.vaadin.shared.AbstractFieldState;
 
 @SuppressWarnings("serial")
@@ -15,4 +18,5 @@ public class PaperSliderState extends AbstractFieldState {
     public double secondaryProgress = 0;
     public boolean editable = false;
     public double immediateValue = 0;
+    public List<String> handlerNames = new ArrayList<>();
 }

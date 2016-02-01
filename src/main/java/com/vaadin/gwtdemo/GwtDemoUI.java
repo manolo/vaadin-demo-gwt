@@ -8,6 +8,8 @@ import org.jsoup.nodes.Element;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.gwtdemo.components.BaseComponent.EventListener;
+import com.vaadin.gwtdemo.components.PaperSliderComponent;
 import com.vaadin.server.BootstrapFragmentResponse;
 import com.vaadin.server.BootstrapListener;
 import com.vaadin.server.BootstrapPageResponse;
@@ -16,9 +18,6 @@ import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -35,34 +34,31 @@ public class GwtDemoUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         
-        // For some reason this is not performed correctly in the bootstrap
-//        String js =
-//                "l = document.createElement('link');" +
-//                "l.rel = 'stylesheet';" +
-//                "l.href = 'VAADIN/themes/" + THEME + "/styles.css';" +
-//                "document.body.appendChild(l);" +
-//                "document.body.classList.add('" + THEME + "')";
-//        JavaScript.eval(js);
-        
-        
         final VerticalLayout layout = new VerticalLayout();
         
-//        PaperSliderComponent p = new PaperSliderComponent();
-//        layout.addComponent(p);
         
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
-
-        Button button = new Button("Click Me");
-        button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
+        PaperSliderComponent p = new PaperSliderComponent();
+        layout.addComponent(p);
+        
+        p.addChangeHandler(new EventListener() {
+            public void onBrowserEvent(String eventName) {
+//                sliderLabel.setCaption("" + slider.value());
+            }
         });
         
-        layout.addComponents(name, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        
+//        final TextField name = new TextField();
+//        name.setCaption("Type your name here:");
+//
+//        Button button = new Button("Click Me");
+//        button.addClickListener( e -> {
+//            layout.addComponent(new Label("Thanks " + name.getValue() 
+//                    + ", it works!"));
+//        });
+//        
+//        layout.addComponents(name, button);
+//        layout.setMargin(true);
+//        layout.setSpacing(true);
+//        
         setContent(layout);
     }
 
@@ -78,8 +74,8 @@ public class GwtDemoUI extends UI {
                         public void modifyBootstrapPage(BootstrapPageResponse response) {
                             
                             Element head = response.getDocument().head();
-                            head.appendElement("script")
-                                .attr("src", "VAADIN/widgetsets/" + WIDGETSET + "/bower_components/webcomponentsjs/webcomponents-lite.js");
+//                            head.appendElement("script")
+//                                .attr("src", "VAADIN/widgetsets/" + WIDGETSET + "/bower_components/webcomponentsjs/webcomponents-lite.js");
                             
                             head.appendElement("link")
                                 .attr("rel", "stylesheet")

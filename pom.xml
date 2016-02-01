@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.vaadin.polymer</groupId>
       <artifactId>vaadin-gwt-polymer-elements</artifactId>
-      <version>1.2.3.0</version>
+      <version>1.2.3.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -261,7 +261,7 @@
                         <includeGroupIds>com.vaadin</includeGroupIds>
                         <includeArtifactIds>vaadin-client-compiler,vaadin-client</includeArtifactIds>
                         <includes>com/vaadin/**</includes>
-                        <excludes>**/MessageSender.*,**/LayoutManager.*</excludes>
+                        <excludes>**/MessageSender.*,**/LayoutManager.*,**/MessageHandler.*,**/client/metadata/Property.*</excludes>
                         <outputDirectory>
                             ${project.build.directory}/generated-sources
                         </outputDirectory>

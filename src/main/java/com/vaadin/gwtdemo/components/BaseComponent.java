@@ -88,7 +88,6 @@ public abstract class BaseComponent extends AbstractComponent {
                                 field.set(c, o);
                             } catch (NoSuchFieldException e) {
                             } catch (Exception e) {
-                                e.printStackTrace();
                             }
                         }
                         clz = clz.getSuperclass() != AbstractFieldState.class ? clz.getSuperclass() : null;

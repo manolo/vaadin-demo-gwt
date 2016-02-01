@@ -1,11 +1,21 @@
 package com.vaadin.gwtdemo.components;
 
 import com.vaadin.gwtdemo.client.ui.PaperSliderState;
+import com.vaadin.polymer.paper.PaperSliderElement;
 
 @SuppressWarnings("serial")
 public class PaperSliderComponent extends CoreRangeComponent {
+    
+    public PaperSliderComponent() {
+        getState().handlerNames.add("AAA");
+        getState().handlerNames.add("BBB");
+        getState().max = 80;
+        getState().value = 50;
+        
+    }
+    
     protected String[] events() {
-      return concat(super.events(), new String[]{"change"});
+      return concat(super.events(), PaperSliderElement.EVENTS);
     }
 
     protected String[] attributes() {
