@@ -4,9 +4,7 @@ This project is a starter vaadin application replacing vaadin-client-compiler by
 
 It also uses new `net.ltgt.gwt-maven-plugin` for the compilation.
 
-It depends on a [patched](https://gwt-review.googlesource.com/#/c/7857/) version of GWT-2.8.0-SNAPSHOT supporting Jetty.9 deployed in a private repo, but you could use master GWT if you dont need Jetty.9.
-
-This version has also a customised `JettyLauncher` so as Jetty reads servlet 3.0 annotations in vaadin projects and hot-reloads whenever any object in the classpath changes.
+This version has customised `JettyLauncher` so as Jetty reads servlet 3.0 annotations in vaadin projects and hot-reloads whenever any object in the classpath changes.
 
 ### How it works
 
