@@ -10,7 +10,7 @@
   <name>com.vaadin.polymer.demo</name>
 
   <properties>
-    <gwt.version>2.8.0.JETTY9-SNAPSHOT</gwt.version>
+    <gwt.version>2.8.0.VCM-SNAPSHOT</gwt.version>
     <vaadin.version>7.6.1</vaadin.version>
     <jetty.version>9.2.14.v20151106</jetty.version>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -110,9 +110,17 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>3.0.1</version>
     </dependency>
+
+<!--
     <dependency>
      <groupId>org.eclipse.jetty</groupId>
      <artifactId>jetty-annotations</artifactId>
+     <version>${jetty.version}</version>
+    </dependency>
+-->
+    <dependency>
+     <groupId>org.eclipse.jetty</groupId>
+     <artifactId>jetty-util</artifactId>
      <version>${jetty.version}</version>
     </dependency>
 
@@ -245,7 +253,7 @@
                         <includeGroupIds>com.vaadin</includeGroupIds>
                         <includeArtifactIds>vaadin-client-compiler,vaadin-client</includeArtifactIds>
                         <includes>com/vaadin/**</includes>
-                        <excludes>**/MessageSender.*,**/LayoutManager.*</excludes>
+                        <excludes>**/*.class,**/MessageSender.*,**/LayoutManager.*</excludes>
                         <outputDirectory>
                             ${project.build.directory}/generated-sources
                         </outputDirectory>
